@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Task-lambda
+
+  Sample SAM Template for Task-lambda
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+
+Resources:
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: hello_world/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      Timeout: 3
+      MemorySize: 128
+      FunctionName: !Sub ${Environment}-Task-lambda # TODO replace myFunctionName with actual Function Name
+      Environment:
+        Variables:
+          ConfigBucket: !Sub ${Environment}-Task-lambda
+      Policies:
+      - AmazonS3FullAccess
+      - AmazonAthenaFullAccess
+      

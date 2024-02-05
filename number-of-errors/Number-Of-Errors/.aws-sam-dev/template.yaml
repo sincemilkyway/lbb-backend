@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'Task-lambda
+
+  Sample SAM Template for Task-lambda
+
+  '
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+Resources:
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: HelloWorldFunction
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      Timeout: 3
+      MemorySize: 128
+      FunctionName:
+        Fn::Sub: ${Environment}-Task-lambda
+      Environment:
+        Variables:
+          ConfigBucket:
+            Fn::Sub: ${Environment}-Task-lambda
+      Policies:
+      - AmazonS3FullAccess
+      - AmazonAthenaFullAccess
+    Metadata:
+      SamResourceId: HelloWorldFunction

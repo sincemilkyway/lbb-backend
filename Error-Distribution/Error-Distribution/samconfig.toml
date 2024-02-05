@@ -1,0 +1,27 @@
+version = 0.1
+[global.parameters]
+s3_prefix = "Task-lambda" #TODO replace with your application name, this is where the zip is stored
+[dev]
+[dev.global.parameters]
+build_dir = ".aws-sam-dev"
+parameter_overrides = [
+    "Environment=dev",
+    "ConfigBucket=lbb-sam-lake"
+]
+[dev.deploy.parameters]
+s3_bucket = "lbb-sam-lake"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+profile = "lbb"
+template = ".aws-sam-dev/template.yaml"
+stack_name = "Task-lambda" # TODO replace with your application name -stack
+[default.deploy.parameters]
+stack_name = "Task-lambda"
+resolve_s3 = true
+s3_prefix = "Task-lambda"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "Environment=\"dev\""
+image_repositories = []
