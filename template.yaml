@@ -1,0 +1,178 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: A collection of Lambda functions for various tasks.
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues: [dev, qa, prod]
+    Description: The environment for which the components are created
+  SecurityGroupId:
+    Type: CommaDelimitedList
+    Default: sg-cba80abd
+  Subnets:
+    Type: CommaDelimitedList
+    Default: subnet-6991011e,subnet-94fe4ecd
+
+Globals:
+  Function:
+    Runtime: python3.10
+    Environment:
+      Variables:
+        RestEmail: "myValue"
+        RestPassword : "myValue"
+
+Resources:
+
+  DataForSeoClient:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: dataforseo-client
+      Description: Shared Pydantic models
+      ContentUri: dataforseo-client/
+      CompatibleRuntimes:
+        - python3.10
+
+  BlockedPagesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: blocked-pages/
+      FunctionName: !Sub ${Environment}-blocked-pages
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      Timeout: 120
+      MemorySize: 128
+      Layers:
+        - !Ref DataForSeoClient
+
+
+  HttpsImplementationScoreFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: https-implementation-score/
+      FunctionName: !Sub ${Environment}-https-implementation-score
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      Timeout: 120
+      MemorySize: 128
+      Layers:
+        - !Ref DataForSeoClient
+      VpcConfig:
+        SecurityGroupIds: !Ref SecurityGroupId
+        SubnetIds: !Ref Subnets
+
+
+
+  NumberOfRedirectsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: number-of-redirects/
+      FunctionName: !Sub ${Environment}-number-of-redirects
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      Timeout: 120
+      MemorySize: 128
+      Layers:
+        - !Ref DataForSeoClient
+      VpcConfig:
+        SecurityGroupIds: !Ref SecurityGroupId
+        SubnetIds: !Ref Subnets
+
+
+
+  ErrorDistributionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: error-distribution/
+      FunctionName: !Sub ${Environment}-error-distribution
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      Timeout: 120
+      MemorySize: 128
+      Layers:
+        - !Ref DataForSeoClient
+      VpcConfig:
+        SecurityGroupIds: !Ref SecurityGroupId
+        SubnetIds: !Ref Subnets
+
+
+
+  NumberOfErrorsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: number-of-errors/
+      FunctionName: !Sub ${Environment}-number-of-errors
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      Timeout: 120
+      MemorySize: 128
+      Layers:
+        - !Ref DataForSeoClient
+      VpcConfig:
+        SecurityGroupIds: !Ref SecurityGroupId
+        SubnetIds: !Ref Subnets
+
+
+  PagesWithIssuesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: pages-with-issues/
+      FunctionName: !Sub ${Environment}-pages-with-issues
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      Timeout: 120
+      MemorySize: 128
+      Layers:
+        - !Ref DataForSeoClient
+      VpcConfig:
+        SecurityGroupIds: !Ref SecurityGroupId
+        SubnetIds: !Ref Subnets
+
+
+  UrlsWithErrorsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: urls-with-errors/
+      FunctionName: !Sub ${Environment}-urls-with-errors
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      Timeout: 120
+      MemorySize: 128
+      Layers:
+        - !Ref DataForSeoClient
+      VpcConfig:
+        SecurityGroupIds: !Ref SecurityGroupId
+        SubnetIds: !Ref Subnets
+
+
+  HealthyPagesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: healthy-pages/
+      FunctionName: !Sub ${Environment}-healthy-pages
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      Timeout: 120
+      MemorySize: 128
+      Layers:
+        - !Ref DataForSeoClient
+      VpcConfig:
+        SecurityGroupIds: !Ref SecurityGroupId
+        SubnetIds: !Ref Subnets
+
+  NumberOfNoticesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: number-of-notices/
+      FunctionName: !Sub ${Environment}-number-of-notices
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      Timeout: 120
+      MemorySize: 128
+      Layers:
+        - !Ref DataForSeoClient
+      VpcConfig:
+        SecurityGroupIds: !Ref SecurityGroupId
+        SubnetIds: !Ref Subnets
+
